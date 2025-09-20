@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Willy Winks Co. - Home</title>
+    <style>
+        :root {
+            --brown-dark: #4b2e2a;
+            --brown-medium: #6f4e37;
+            --brown-light: #a67858;
+            --cream: #f5e9dc;
+            --white: #ffffff;
+            --text-color: #2b1e18;
+            --accent: #ffd700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--cream);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--brown-dark);
+            color: var(--white);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+            background-color: var(--brown-medium);
+            color: var(--white);
+            border-radius: 12px;
+            margin: 20px;
+            transition: transform 0.3s;
+        }
+
+        .hero:hover {
+            transform: translateY(-3px);
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 25px;
+        }
+
+        .hero button {
+            padding: 15px 35px;
+            font-size: 18px;
+            background-color: var(--brown-light);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .hero button:hover {
+            background-color: var(--brown-dark);
+            transform: scale(1.05);
+        }
+
+        .section {
+            padding: 60px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .section h3 {
+            font-size: 36px;
+            color: var(--brown-dark);
+            margin-bottom: 25px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h4 {
+            margin-bottom: 10px;
+            color: var(--brown-medium);
+        }
+
+        .card p {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        footer {
+            margin-top: auto;
+            background-color: var(--brown-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* WillyBot Styles */
+        #chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            max-height: 400px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-size: 14px;
+            background-color: var(--white);
+            border: 1px solid var(--brown-light);
+        }
+
+        #chatbot-header {
+            background-color: var(--brown-medium);
+            color: var(--white);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        #chatbot-header button {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #chatbot-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        #chatbot-input {
+            display: flex;
+            border-top: 1px solid var(--brown-light);
+        }
+
+        #chatbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+        }
+
+        #chatbot-input button {
+            padding: 10px;
+            background-color: var(--brown-dark);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+        }
+
+        .message.bot {
+            margin-bottom: 5px;
+            color: var(--brown-dark);
+        }
+
+        .message.user {
+            margin-bottom: 5px;
+            text-align: right;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Willy Winks Co. 🍫🧼</h1>
+        <nav style="display:flex; align-items:center; gap:20px;">
+            <ul style="list-style:none; display:flex; gap:20px; margin:0; padding:0;">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="products.html">Our Soap Bars</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a href="login.html" style="
+          margin-left:20px;
+          padding:8px 16px;
+          background-color: var(--brown-light);
+          color: var(--white);
+          text-decoration:none;
+          border-radius:8px;
+          font-weight:bold;
+          transition: background 0.3s;
+        " onmouseover="this.style.backgroundColor='var(--brown-dark)'"
+                onmouseout="this.style.backgroundColor='var(--brown-light)'">
+                Sign In
+            </a>
+        </nav>
+    </header>
+
+
+    <section class="hero">
+        <h2>Chocolate Flavored Soap Like No Other!</h2>
+        <p>Clean, sweet, and unforgettable. Experience the Willy Winks magic today.</p>
+        <button onclick="window.location.href='products.html'">Shop Now</button>
+    </section>
+
+    <section class="section">
+        <h3>Why Choose Willy Winks?</h3>
+        <div class="cards">
+            <div class="card">
+                <h4>Deliciously Clean</h4>
+                <p>Our soap cleans your skin while giving you that chocolatey delight.</p>
+            </div>
+            <div class="card">
+                <h4>Safe Ingredients</h4>
+                <p>Natural, cruelty-free, and made with love for your skin.</p>
+            </div>
+            <div class="card">
+                <h4>Fun & Unique</h4>
+                <p>No ordinary soap here. Willy Winks delivers whimsy in every bar.</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="chatbot">
+        <div id="chatbot-header">
+            WillyBot 🤖
+            <button id="close-chatbot">✖</button>
+        </div>
+        <div id="chatbot-messages">
+            <div class="message bot">Hi! I'm WillyBot. Ask me anything about chocolate soap!</div>
+        </div>
+        <div id="chatbot-input">
+            <input type="text" id="user-input" placeholder="Type your question…">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Willy Winks Co. | Chocolate Flavored Soap HQ 🍫🧼</p>
+    </footer>
+
+    <script>
+        const sendBtn = document.getElementById('send-btn');
+        const userInput = document.getElementById('user-input');
+        const messagesDiv = document.getElementById('chatbot-messages');
+        const closeBtn = document.getElementById('close-chatbot');
+        const chatbotDiv = document.getElementById('chatbot');
+
+        sendBtn.addEventListener('click', () => {
+            const text = userInput.value.trim();
+            if (!text) return;
+            appendUserMessage(text);
+            userInput.value = '';
+            setTimeout(() => appendBotMessage(botReply(text)), 500);
+        });
+
+        userInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendBtn.click(); });
+        closeBtn.addEventListener('click', () => { chatbotDiv.style.display = 'none'; });
+
+        function appendUserMessage(msg) {
+            const div = document.createElement('div'); div.classList.add('message', 'user'); div.textContent = msg;
+            messagesDiv.appendChild(div); messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        function appendBotMessage(msg) {
+            const div = document.createElement('div'); div.classList.add('message', 'bot'); div.textContent = msg;
+            messagesDiv.appendChild(div); messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        function botReply(input) {
+            input = input.toLowerCase();
+            if (input.includes('chocolate')) return "All our soaps smell like premium chocolate!";
+            if (input.includes('buy') || input.includes('shop')) return "You can order directly from our 'Our Soap Bars' page!";
+            if (input.includes('ingredients')) return "Our ingredients are natural, safe, and skin-friendly!";
+            return "Sweet question! Can you ask me more about our chocolate soaps?";
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Willy Winks Co. - Login</title>
+    <style>
+        :root {
+            --brown-dark: #4b2e2a;
+            --brown-medium: #6f4e37;
+            --brown-light: #a67858;
+            --cream: #f5e9dc;
+            --white: #ffffff;
+            --text-color: #2b1e18;
+            --accent: #ffd700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--cream);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            width: 320px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: var(--brown-dark);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--brown-light);
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--brown-dark);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: var(--brown-medium);
+        }
+
+        .toggle-link {
+            font-size: 14px;
+            color: var(--brown-medium);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .success {
+            color: green;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" id="login-container">
+        <h2 id="form-title">Sign In</h2>
+        <div class="error" id="error-msg"></div>
+        <div class="success" id="success-msg"></div>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button id="submit-btn">Sign In</button>
+        <div class="toggle-link" id="toggle-form">Don't have an account? Create one</div>
+    </div>
+
+    <script>
+        let isLogin = true;
+
+        const toggleLink = document.getElementById('toggle-form');
+        const formTitle = document.getElementById('form-title');
+        const submitBtn = document.getElementById('submit-btn');
+        const errorMsg = document.getElementById('error-msg');
+        const successMsg = document.getElementById('success-msg');
+
+        toggleLink.addEventListener('click', () => {
+            isLogin = !isLogin;
+            formTitle.textContent = isLogin ? "Sign In" : "Create Account";
+            submitBtn.textContent = isLogin ? "Sign In" : "Create Account";
+            errorMsg.textContent = "";
+            successMsg.textContent = "";
+            toggleLink.textContent = isLogin ? "Don't have an account? Create one" : "Already have an account? Sign in";
+        });
+
+        submitBtn.addEventListener('click', () => {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            if (!username || !password) { errorMsg.textContent = "Please fill out all fields."; return; }
+
+            let users = JSON.parse(localStorage.getItem('users') || '{}');
+
+            if (isLogin) {
+                if (users[username] && users[username] === password) {
+                    successMsg.textContent = "Login successful! Redirecting…";
+                    errorMsg.textContent = "";
+                    setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+                } else {
+                    errorMsg.textContent = "Invalid username or password.";
+                    successMsg.textContent = "";
+                }
+            } else {
+                if (users[username]) {
+                    errorMsg.textContent = "Username already exists.";
+                    successMsg.textContent = "";
+                } else {
+                    users[username] = password;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    successMsg.textContent = "Account created! You can now sign in.";
+                    errorMsg.textContent = "";
+                    isLogin = true;
+                    formTitle.textContent = "Sign In";
+                    submitBtn.textContent = "Sign In";
+                    toggleLink.textContent = "Don't have an account? Create one";
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
